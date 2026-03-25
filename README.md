@@ -12,7 +12,7 @@
   <img src="https://img.shields.io/badge/Docker-containerized-2496ED?logo=docker&logoColor=white" alt="Docker">
 </p>
 
-**[Turkce dokumantasyon](README.tr.md)**
+**[Türkçe dokumantasyon](README.tr.md)**
 
 ---
 
