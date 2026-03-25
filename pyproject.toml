@@ -1,0 +1,115 @@
+[build-system]
+requires = ["setuptools>=70.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "truthrag"
+version = "0.1.0"
+description = "Self-Correcting RAG Pipeline with Confidence Scoring"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "langchain==0.3.14",
+    "langchain-community==0.3.14",
+    "langchain-ollama==0.2.3",
+    "langchain-text-splitters==0.3.4",
+    "langgraph==0.2.62",
+    "qdrant-client==1.12.1",
+    "fastapi==0.115.6",
+    "uvicorn[standard]==0.32.1",
+    "streamlit==1.41.1",
+    "python-dotenv==1.0.1",
+    "docling>=2.81.0",
+    "duckduckgo-search>=7.0.0",
+    "crawl4ai>=0.6.0",
+    "httpx==0.28.1",
+    "pydantic==2.10.4",
+    "slowapi==0.1.9",
+    "python-multipart>=0.0.9",
+    "rank-bm25==0.2.2",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest==8.3.4",
+    "pytest-asyncio==0.25.0",
+    "pytest-cov==6.0.0",
+    "httpx",
+    "respx==0.22.0",
+    "ruff==0.8.6",
+    "mypy==1.14.1",
+    "pre-commit==4.0.1",
+    "types-requests>=2.31.0",
+]
+
+[tool.setuptools.packages.find]
+include = ["src*"]
+
+# Ruff
+
+[tool.ruff]
+target-version = "py312"
+line-length = 100
+
+[tool.ruff.lint]
+select = [
+    "E",    # pycodestyle errors
+    "W",    # pycodestyle warnings
+    "F",    # pyflakes
+    "I",    # isort
+    "N",    # pep8-naming
+    "UP",   # pyupgrade
+    "B",    # flake8-bugbear
+    "S",    # flake8-bandit (security)
+    "T20",  # flake8-print
+    "SIM",  # flake8-simplify
+    "TCH",  # flake8-type-checking
+    "RUF",  # ruff-specific rules
+]
+ignore = [
+    "S101",   # allow assert in tests
+    "S603",   # allow subprocess without shell=True check
+    "B008",   # allow function calls in default args (FastAPI Depends)
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = ["S101", "S106"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["src"]
+
+# Mypy
+
+[tool.mypy]
+python_version = "3.12"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = false
+check_untyped_defs = true
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = "tests.*"
+disallow_untyped_defs = false
+
+# Pytest
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = "test_*.py"
+python_functions = "test_*"
+asyncio_mode = "auto"
+addopts = "-v --tb=short --strict-markers"
+markers = [
+    "integration: marks tests requiring external services",
+]
+
+# Coverage
+
+[tool.coverage.run]
+source = ["src"]
+omit = ["tests/*"]
+
+[tool.coverage.report]
+fail_under = 70
+show_missing = true
